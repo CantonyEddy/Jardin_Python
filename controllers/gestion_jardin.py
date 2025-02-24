@@ -1,12 +1,15 @@
 from models.jardin import Jardin
 from models.plante import Plante
-from models.plante import Tomate, Tournesol, Carotte
+from models.plante import Tomate, Tournesol, Carotte, Radis_noir, Aronia, Zingiber_spectabile
 from models.evenement import Evenement
 
 PLANTES_DISPONIBLES = {
     "tomate": Tomate,
     "tournesol": Tournesol,
-    "carotte": Carotte
+    "carotte": Carotte,
+    "radis noir": Radis_noir,
+    "aronia": Aronia,
+    "zingiber spectabile": Zingiber_spectabile
 }
 
 def planter_une_plante(jardin):
