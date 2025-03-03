@@ -25,6 +25,6 @@ class Temps:
 
         # Faire pousser les plantes et baisser eau/lumière
         for plante in jardin.plantes:
-            plante.croissance += 2
+            plante.croissance += 10
             plante.eau = max(0, plante.eau - 3)
             plante.lumiere = max(0, plante.lumiere - 2)
