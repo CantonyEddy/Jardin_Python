@@ -46,20 +46,20 @@ class Tomate(Plante):
 
 class Tournesol(Plante):
     def __init__(self):
-        super().__init__("Tournesol", eau_max=40, lumiere_max=50, croissance_max=120, fertilite_min=5)
+        super().__init__("Tournesol", eau_max=40, lumiere_max=50, croissance_max=120, fertilite_min=8)
 
 class Carotte(Plante):
     def __init__(self):
-        super().__init__("Carotte", eau_max=30, lumiere_max=20, croissance_max=90, fertilite_min=5)
+        super().__init__("Carotte", eau_max=30, lumiere_max=25, croissance_max=60, fertilite_min=4)
         
 class Radis_noir(Plante):
     def __init__(self):
-        super().__init__("Radis noir", eau_max=30, lumiere_max=25, croissance_max=80, fertilite_min=5)
+        super().__init__("Radis noir", eau_max=45, lumiere_max=30, croissance_max=90, fertilite_min=6)
         
 class Aronia(Plante):
     def __init__(self):
-        super().__init__("Aronia", eau_max=25, lumiere_max=30, croissance_max=60, fertilite_min=5)
+        super().__init__("Aronia", eau_max=25, lumiere_max=40, croissance_max=80, fertilite_min=7)
         
 class Zingiber_spectabile(Plante):
     def __init__(self):
-        super().__init__("Zingiber spectabile", eau_max=80, lumiere_max=30, croissance_max=200, fertilite_min=5)
+        super().__init__("Zingiber spectabile", eau_max=60, lumiere_max=20, croissance_max=110, fertilite_min=9)

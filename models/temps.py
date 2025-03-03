@@ -1,22 +1,30 @@
-import time
-from models.jardin import Jardin
+import random
+from models.evenement import LISTE_EVENEMENTS
 
 class Temps:
     def __init__(self):
         self.tour = 0
         self.periode = "Matin"
-        self.periodes = ["Matin", "Après-midi", "Soir", "Nuit"]
 
     def avancer_temps(self, jardin):
         self.tour += 1
-        self.periode = self.periodes[self.tour % len(self.periodes)]
-        print(f"⏳ Tour {self.tour} - Période: {self.periode}")
-        self.effet_du_temps(jardin)
+        if self.tour % 3 == 0:
+            self.periode = "Soir"
+        elif self.tour % 2 == 0:
+            self.periode = "Après-midi"
+        else:
+            self.periode = "Matin"
 
-    def effet_du_temps(self, jardin):
+        # 80% de chance d'un événement, 20% de journée calme
+        if random.random() <= 0.8:
+            evenement = random.choice(LISTE_EVENEMENTS)
+            print(f"🌟 Événement : {evenement.nom} - {evenement.description}")
+            evenement.appliquer(jardin)
+        else:
+            print("😊 Aujourd'hui, il ne se passe rien de spécial.")
+
+        # Faire pousser les plantes et baisser eau/lumière
         for plante in jardin.plantes:
-            if self.periode in ["Matin", "Après-midi"]:
-                plante.croissance = min(plante.croissance + 2, plante.croissance_max)
-            if self.periode == "Nuit":
-                plante.eau = max(plante.eau - 3, 0)
-        print("🌿 Les plantes ont été affectées par le passage du temps.")
+            plante.croissance += 2
+            plante.eau = max(0, plante.eau - 3)
+            plante.lumiere = max(0, plante.lumiere - 2)
