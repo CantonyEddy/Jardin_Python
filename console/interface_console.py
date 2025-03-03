@@ -3,6 +3,7 @@ from models.jardin import Jardin
 from models.temps import Temps
 from models.plante import Tomate, Tournesol, Carotte, Radis_noir, Aronia, Zingiber_spectabile
 from controllers.gestion_jardin import PLANTES_DISPONIBLES
+from controllers.sauvegarde import Sauvegarde
 
 class InterfaceConsole:
     def __init__(self):
@@ -10,26 +11,32 @@ class InterfaceConsole:
         self.temps = Temps()
         self.actions_restantes = 4
 
+        self.sauvegarde = Sauvegarde()
+        self.sauvegarde.charger_jardin(self.jardin, PLANTES_DISPONIBLES)
+
     def afficher_jardin(self):
         print("\n🌿 État actuel du jardin:")
         if not self.jardin.plantes:
             print("Aucune plante n'est présente.")
         else:
             for i, plante in enumerate(self.jardin.plantes):
+                plante.verifier_etat()
                 print(f"[{i+1}] {plante.nom}")
                 print(f"    - Eau : {plante.eau}/{plante.eau_max}")
                 print(f"    - Lumière : {plante.lumiere}/{plante.lumiere_max}")
                 print(f"    - Croissance : {plante.croissance}/{plante.croissance_max}")
                 print(f"    - Fertilité : {plante.fertilite}")
+                print(f"    - État : {plante.etat}")
 
     def menu_principal(self):
         while True:
             print(f"\n=== Menu Principal (Actions restantes : {self.actions_restantes}) ===")
             print("1. Afficher le jardin")
             print("2. Planter une plante")
-            print("3. Entretenir une plante (arroser, exposer au soleil, fertiliser)")
+            print("3. Entretenir une plante (arroser, exposer au soleil, fertiliser, insecticide)")
             print("4. Avancer le temps")
-            print("5. Quitter")
+            print("5. Sauvegarder et quitter")
+            print("6. Quitter sans sauvegarder")
 
             choix = input("Choisissez une option: ")
 
@@ -45,9 +52,12 @@ class InterfaceConsole:
                 self.actions_restantes -= 1
             elif choix == "4":
                 self.avancer_temps()
-                self.actions_restantes = 4  # Reset des actions
+                self.actions_restantes = 4
             elif choix == "5":
-                print("👋 Au revoir!")
+                self.sauvegarder_et_quitter()
+                break
+            elif choix == "6":
+                self.quitter_sans_sauvegarder()
                 break
             else:
                 print("⚠️ Option invalide, veuillez réessayer.")
@@ -105,6 +115,7 @@ class InterfaceConsole:
         print("1. Arroser")
         print("2. Exposer au soleil")
         print("3. Fertiliser")
+        print("4. Pulvériser de l'insecticide")
 
         action_choisie = input("Quelle action souhaitez-vous réaliser (entrez le numéro) ? ").strip()
 
@@ -114,14 +125,28 @@ class InterfaceConsole:
             plante.exposer_au_soleil()
         elif action_choisie == "3":
             plante.fertiliser()
+        elif action_choisie == "4":
+            plante.croissance = max(0, plante.croissance - 5)
+            plante.fertilite = max(0, plante.fertilite - 1)
+            print(f"🐛 {plante.nom} a été traitée contre les parasites.")
         else:
             print("⚠️ Action inconnue.")
 
     def avancer_temps(self):
         self.temps.avancer_temps(self.jardin)
         self.jardin.verifier_etat_du_jardin()
+        self.sauvegarde.sauvegarder_jardin(self.jardin)
         print(f"⏳ Le temps a avancé. Nous sommes maintenant en {self.temps.periode}.")
         self.afficher_jardin()
+
+    def sauvegarder_et_quitter(self):
+        self.sauvegarde.sauvegarder_jardin(self.jardin)
+        self.sauvegarde.fermer()
+        print("💾 Jardin sauvegardé. À bientôt !")
+
+    def quitter_sans_sauvegarder(self):
+        self.sauvegarde.fermer()
+        print("👋 Vous avez quitté sans sauvegarder. À bientôt !")
 
 if __name__ == "__main__":
     interface = InterfaceConsole()

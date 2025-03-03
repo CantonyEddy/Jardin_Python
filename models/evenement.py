@@ -21,7 +21,7 @@ def invasion_parasites(jardin):
     if jardin.plantes:
         victime = random.choice(jardin.plantes)
         victime.croissance = max(0, victime.croissance - 10)
-        print(f"🐛 Une invasion de parasites attaque {victime.nom} qui perd de la croissance.")
+        print(f"🐛 Une invasion de parasites attaque {victime.nom} ! Utilisez de l'insecticide pour la protéger.") 
 
 def pluie_abondante(jardin):
     for plante in jardin.plantes:
